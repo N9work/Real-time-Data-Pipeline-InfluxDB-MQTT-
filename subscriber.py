@@ -1,0 +1,45 @@
+# subscriber.py
+import json
+import paho.mqtt.client as mqtt
+from influxdb_client import InfluxDBClient, Point, WriteOptions
+
+# InfluxDB config
+url = "http://localhost:8086"   # ถ้า InfluxDB อยู่บนเครื่องคุณ
+token = "megL-kLNWQGZCdYw_NiWndYFkHi9o9cEekalUQaY1OE0QOsCjDaPlCGxGH11KJLLCuwEFUtcFQUOza93MosTvQ=="              # แทนที่ด้วย token จริง
+org = "NU"
+bucket = "sensor"
+
+client_influx = InfluxDBClient(url=url, token=token, org=org)
+write_api = client_influx.write_api(write_options=WriteOptions(batch_size=1))
+
+# MQTT config
+BROKER = "broker.hivemq.com"
+PORT = 1883
+TOPIC = "sensors/data"
+
+def on_message(client, userdata, msg):
+    try:
+        data = json.loads(msg.payload.decode())
+        temperature = data.get("temperature")
+        humidity = data.get("humidity")
+
+        point = (
+            Point("sensor_data")
+            .tag("device", "sensor-01")
+            .field("temperature", temperature)
+            .field("humidity", humidity)
+        )
+
+        write_api.write(bucket=bucket, org=org, record=point)
+        print(f"Saved -> Temperature: {temperature}, Humidity: {humidity}")
+
+    except Exception as e:
+        print("Error:", e)
+
+client_mqtt = mqtt.Client()
+client_mqtt.on_message = on_message
+client_mqtt.connect(BROKER, PORT, 60)
+client_mqtt.subscribe(TOPIC)
+
+print("Listening for data...")
+client_mqtt.loop_forever()
