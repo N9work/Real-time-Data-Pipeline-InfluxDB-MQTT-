@@ -1,13 +1,14 @@
-# subscriber.py
+import os
 import json
 import paho.mqtt.client as mqtt
 from influxdb_client import InfluxDBClient, Point, WriteOptions
 
 # InfluxDB config
-url = "http://localhost:8086"   # ถ้า InfluxDB อยู่บนเครื่องคุณ
-token = "megL-kLNWQGZCdYw_NiWndYFkHi9o9cEekalUQaY1OE0QOsCjDaPlCGxGH11KJLLCuwEFUtcFQUOza93MosTvQ=="              # แทนที่ด้วย token จริง
-org = "NU"
-bucket = "sensor"
+url = os.getenv("INFLUX_URL")
+token = os.getenv("INFLUX_TOKEN") 
+org = os.getenv("INFLUX_ORG")
+bucket = os.getenv("INFLUX_BUCKET")
+
 
 client_influx = InfluxDBClient(url=url, token=token, org=org)
 write_api = client_influx.write_api(write_options=WriteOptions(batch_size=1))
