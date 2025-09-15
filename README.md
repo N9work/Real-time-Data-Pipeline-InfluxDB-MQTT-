@@ -24,9 +24,9 @@ bash
 
 # Frontend (3D web by three.js)
 bash
-npm install
-npm install three
-npm run dev
+- npm install
+- npm install three
+- npm run dev
 
 ## Future Updates
 - [ ] Add a `docker-compose.yaml` file to simplify deployment and run **MQTT + InfluxDB + App** together.
