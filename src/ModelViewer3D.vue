@@ -149,7 +149,6 @@ onMounted(async () => {
     // 🟢 กำหนด URL ให้ Mesh ที่ต้องการ
     modelRoot.traverse((obj) => {
       if (obj.isMesh) {
-        // ตัวอย่าง: คลิกแล้วไป Google
         if (obj.name === "LCD-material") obj.userData.url = "http://localhost:3000/d/d4bf7ca1-57f9-46b7-9aa8-3c25daadc4b7/sensor-monitoring?orgId=1&from=now-15m&to=now&timezone=browser&refresh=auto"
       }
     })
