@@ -1,5 +1,32 @@
-# Vue 3 + Vite
+# Real-time Data Pipeline with InfluxDB & MQTT
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This project provides a real-time data pipeline that collects sensor data via MQTT and stores it in InfluxDB.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Current Usage
+- Run the application inside a container using the provided `Dockerfile`.
+- InfluxDB and MQTT broker must be set up and run separately.
+
+## Simulate Sensor
+To test the system without a physical device, you can simulate sensor data.
+
+There are **two files** inside the `simulate_sensor` folder:
+- `publisher.py` – sends fake sensor data to the MQTT broker  
+- `subscriber.py` – subscribes to the topic and receives data  
+
+Run them manually in two terminals:
+
+bash
+# Terminal 1: start publisher
+`python publisher.py`
+
+# Terminal 2: start subscriber
+`python subscriber.py`
+
+# Frontend (3D web by three.js)
+bash
+npm install
+npm install three
+npm run dev
+
+## Future Updates
+- [ ] Add a `docker-compose.yaml` file to simplify deployment and run **MQTT + InfluxDB + App** together.
